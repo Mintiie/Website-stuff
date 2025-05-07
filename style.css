@@ -1,176 +1,205 @@
 * {
     margin: 0;
     padding: 0;
-}
-
-html, body {
+    box-sizing: border-box;
+  }
+  
+  html, body {
     height: 100%;
-    font-family: Arial;
-    background-color: #787878;
     display: flex;
     flex-direction: column;
-}
-
-body {
-    flex: 1;
-}
-
-.main-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 100px;
-}
-
-.hotbar {
-    position: fixed; /* bleibt oben beim Scrollen */
+    font-family: Arial;
+    background-color: #787878;
+    padding-right: 220px; /* Platz für Sidebar */
+  }
+  
+  /* === HOTBAR === */
+  .hotbar {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
     font-size: 1.2rem;
-
-    display: flex;
-    justify-content: space-between; /* horizontal zentriert */
-    align-items: center; /* vertikal zentriert */
     height: 50px;
-
-    padding: 0 20px; /* Abstand links und rechts */
-    box-sizing: border-box; /* Padding zählt zur Gesamtbreite */
-}
-
-.hotbar-left,
-.hotbar-center,
-.hotbar-right {
-  flex: 1;
-}
-
-.hotbar-center {
-  text-align: center;
-  font-weight: bold;
-}
-
-.hotbar-left {
-  text-align: left;
-  font-style: italic;
-}
-
-.hotbar-right {
-  text-align: right;
-  font-family: monospace;
-  font-size: 1.5em;
-}
-
-.content {
-    flex: 1;                            /* nimmt den verfügbaren Platz ein */
+    padding: 0 20px;
     display: flex;
-    justify-content: center;
-    align-items: start;
-    padding-top: 100px;
-}
-
-.profilbild-container {
-    position: absolute;
-    top: 120px;                         /* unter der Hotbar (50px Hotbar + etwas Abstand) */
-    left: 350px;                        /* etwas Abstand vom linken Rand */
-    transform: translateX(-50%);        /*Zentriert*/
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .hotbar-left, .hotbar-center, .hotbar-right {
+    flex: 1;
+  }
+  
+  .hotbar-center {
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .hotbar-left {
+    text-align: left;
+    font-style: italic;
+  }
+  
+  .hotbar-right {
+    text-align: right;
+    font-family: monospace;
+    font-size: 1.5em;
+  }
+  
+  /* === LAYOUT === */
+  .main-wrapper {
+    flex: 1;
     display: flex;
-    flex-direction: column;             /* Bild und Text untereinander*/
-    justify-content: center;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 50px;
+    padding: 125px 100px 50px 100px; /* oben | rechts | unten | links */
+}
+  
+  /* === LINKE SPALTE === */
+  .linke-spalte {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     width: 350px;
-    height: auto;
-}
-
-.profilbild {
-    margin-top: 18px;
+    gap: 20px;
+  }
+  
+  .profilbild {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 50%;                             /* macht es rund */
+    border-radius: 50%;
     border: 3px solid white;
-}
-
-.profilname {                              
-    margin-top: 18px;
-    color: white;                                 /* Schriftfarbe */
-    font-size: 1.5rem;                              /* Schriftgröße */
-    text-align: center;                             /* Text mittig */
-    font-weight: bold;                              /* Optional: Fettschrift */
-    padding: 10px 15px;                             /* Padding, damit der Text nicht an den Rändern klebt */
-    border: 2px solid white;                      /* Weißer Rahmen um den Text */
-    border-radius: 10px;                            /* Abgerundete Ecken für den Rahmen */
-    background-color: rgba(0, 0, 0, 0.6);         /* Optional: Hintergrundfarbe für den Textbereich */
+  }
+  
+  .profilname {
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 2px solid white;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
     width: 250px;
-}
-
-.textarea {
-    margin-top: 18px;
-    width: 100%;                                    /* Textarea nimmt 90% der Breite des Infofeldes ein */
-    height: 250%;                                   /* Textarea nimmt 90% der Höhe des Infofeldes ein */
-    background-color: rgba(0, 0, 0, 0.8);         /* Dunklerer Hintergrund für Textarea */
-    border: 2px solid white;                      /* Kein zusätzlicher Rand */
-    color: white;                                 /* Textfarbe */
-    font-size: 1.2rem;                              /* Schriftgröße im Textarea */
-    resize: none;                                   /* Verhindert das manuelle Vergrößern der Textarea */
-    padding: 10px;                                  /* Innenabstand */
-    border-radius: 10px;                            /* Abgerundete Ecken für das Textarea */
-    box-sizing: border-box;                         /* Damit das Padding mit einberechnet wird */
-}
-.blog-container {
-    position: absolute;
-    top: 18px;
-    left: 500px; /* rechts vom Profilbild */
+  }
+  
+  .textarea {
+    width: 100%;
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+    color: white;
+    font-size: 1.2rem;
+    resize: none;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  /* === RECHTE SPALTE === */
+  .rechte-spalte {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 500px;
-}
-
-.blog-entry {
-    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    max-width: 500px;
+    flex-shrink: 1;
+  }
+  
+  .blog-entry {
+    background-color: rgba(0, 0, 0, 0.6);
     border: 2px solid white;
     border-radius: 10px;
     padding: 15px;
     color: white;
-}
-
-.blog-title {
+  }
+  
+  .blog-title {
     font-size: 1.4rem;
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
     font-weight: bold;
-}
-
-.blog-description {
+  }
+  
+  .blog-description {
     font-size: 1rem;
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
+    line-height: 1.4;
     display: -webkit-box;
-    -webkit-line-clamp: 3;                      /* Maximal 3 sichtbare Zeilen */
+    -webkit-line-clamp: 3;
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.blog-link {
+    height: calc(1.4em * 3); 
+  }
+  
+  .blog-link {
     color: #00bfff;
     text-decoration: none;
-}
-
-.blog-link:hover {
+  }
+  
+  .blog-link:hover {
     text-decoration: underline;
-}
-
-#uhr {
-    font-size: 1.2rem;
-    color: white;
-    font-weight: Arial;
-}
-
-#gruss {
+  }
+  
+  /* === SIDEBAR === */
+  .sidebar {
+    position: fixed;
+    top: 150px;
+    right: 25px;
+    bottom: 100px;
+    width: 150px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
     color: white;
     font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 999;
+  }
+  
+  .sidebar h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .sidebar li {
+    margin: 10px 0;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: color 0.3s;
+  }
+  
+  .sidebar a:hover {
+    color: #007BFF;
+  }
+  
+  /* === TIMER === */
+  #timer {
     font-style: italic;
-}
+    color: white;
+    font-size: 1.1rem;
+  }
+  
