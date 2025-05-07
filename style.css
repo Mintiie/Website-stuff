@@ -5,24 +5,21 @@
   }
   
   html, body {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
     font-family: Arial;
     background-color: #787878;
-    padding-right: 220px; /* Platz für Sidebar */
+    height: 100%;
+    padding-right: 220px;
   }
   
-  /* === HOTBAR === */
   .hotbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    height: 50px;
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
     font-size: 1.2rem;
-    height: 50px;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
@@ -33,35 +30,29 @@
   .hotbar-left, .hotbar-center, .hotbar-right {
     flex: 1;
   }
-  
   .hotbar-center {
     text-align: center;
     font-weight: bold;
   }
-  
   .hotbar-left {
     text-align: left;
     font-style: italic;
   }
-  
   .hotbar-right {
     text-align: right;
     font-family: monospace;
     font-size: 1.5em;
   }
   
-  /* === LAYOUT === */
   .main-wrapper {
-    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
+    padding: 125px 100px 50px 100px;
     gap: 50px;
-    padding: 125px 100px 50px 100px; /* oben | rechts | unten | links */
-}
+  }
   
-  /* === LINKE SPALTE === */
   .linke-spalte {
     display: flex;
     flex-direction: column;
@@ -72,7 +63,7 @@
   
   .profilbild {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;
     border: 3px solid white;
@@ -102,14 +93,12 @@
     border-radius: 10px;
   }
   
-  /* === RECHTE SPALTE === */
   .rechte-spalte {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 100%;
     max-width: 500px;
-    flex-shrink: 1;
+    width: 100%;
   }
   
   .blog-entry {
@@ -128,7 +117,6 @@
   
   .blog-description {
     font-size: 1rem;
-    margin-bottom: 10px;
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -136,19 +124,17 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: calc(1.4em * 3); 
+    height: calc(1.4em * 3);
   }
   
   .blog-link {
     color: #00bfff;
     text-decoration: none;
   }
-  
   .blog-link:hover {
     text-decoration: underline;
   }
   
-  /* === SIDEBAR === */
   .sidebar {
     position: fixed;
     top: 150px;
@@ -173,33 +159,105 @@
     margin-top: 0;
     font-size: 1.2em;
   }
-  
   .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
   }
-  
   .sidebar li {
     margin: 10px 0;
   }
-  
   .sidebar a {
     text-decoration: none;
     color: white;
     display: block;
     transition: color 0.3s;
   }
-  
   .sidebar a:hover {
     color: #007BFF;
   }
   
-  /* === TIMER === */
   #timer {
     font-style: italic;
     color: white;
     font-size: 1.1rem;
   }
   
+  /* === ZIELBEREICH === */
+  .zielbereich {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    margin-top: 0;
+  }
+  
+  .checklist-container,
+  .checklist-history {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    width: 350px;
+  }
+  
+  .checklist-container h3,
+  .checklist-history h3 {
+    margin-bottom: 10px;
+  }
+  
+  #checklist-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  #checklist-input {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid white;
+    background-color: #222;
+    color: white;
+  }
+  
+  #checklist-form button {
+    padding: 5px 10px;
+    background-color: #00bfff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  
+  .checklist-item input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .checklist-item button {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+  }
+  
+  .checklist-history ul li {
+    display: flex;
+    align-items: left;
+    gap: 10px;
+    justify-content: left;
+  }
+  
+  .checklist-history ul li::after {
+    content: "✅";
+    margin-left: 5px;
+  }
