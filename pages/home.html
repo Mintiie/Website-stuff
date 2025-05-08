@@ -1,0 +1,49 @@
+<div class="home-wrapper">
+    <div class="home-linke-spalte">
+      <img src="Bilder/profilbild.png" alt="Profilbild" class="home-profilbild">
+      <div class="home-profilname" id="profilname">Minty</div>
+      <textarea id="info-text" class="home-textarea" placeholder="..."></textarea>
+      <script>
+        if (typeof setupInfoText === 'function') setupInfoText();
+      </script>
+    </div>
+  
+    <div class="home-rechte-spalte">
+      <div class="blog-entry">
+        <h2 class="blog-title">Mein erster Beitrag</h2>
+        <p class="blog-description">Lorem ipsum ...</p>
+        <a href="#" class="blog-link">Mehr lesen</a>
+      </div>
+      <div class="blog-entry">
+        <h2 class="blog-title">Zweiter Eintrag</h2>
+        <p class="blog-description">Lorem ipsum ...</p>
+        <a href="#" class="blog-link">Mehr lesen</a>
+      </div>
+      <div class="blog-entry">
+        <h2 class="blog-title">Gedanken am Montag</h2>
+        <p class="blog-description">Lorem ipsum ...</p>
+        <a href="#" class="blog-link">Mehr lesen</a>
+      </div>
+      <div class="blog-entry">
+        <h2 class="blog-title">Anime der Woche</h2>
+        <p class="blog-description">Lorem ipsum ...</p>
+        <a href="#" class="blog-link">Mehr lesen</a>
+      </div>
+    </div>
+  
+    <div class="zielbereich">
+      <div class="checklist-container">
+        <h3>Ziele</h3>
+        <form id="checklist-form">
+          <input type="text" id="checklist-input" placeholder="Neues Ziel..." required />
+          <button type="submit">Hinzufügen</button>
+        </form>
+        <ul id="checklist-items"></ul>
+      </div>
+  
+      <div class="checklist-history">
+        <h3>Gestern erledigt</h3>
+        <ul></ul>
+      </div>
+    </div>
+  </div>

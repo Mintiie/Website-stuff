@@ -1,0 +1,85 @@
+/* style-profil.css */
+
+/* Hauptlayout */
+.profil-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    width: 100%;
+  }
+  
+  .profil-layout {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  /* Linke Spalte */
+  .profil-links {
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+  }
+  
+  #profil-ziele {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #profil-ziele li {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+  }
+  
+  /* Profilinhalt (Mitte) */
+  .profil-inhalt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .profilbild {
+    width: 100%;
+    max-width: 250px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+  }
+  
+  .profilname {
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 2px solid white;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 250px;
+    margin-top: 15px;
+  }
+  
+  /* Rechte Spalte */
+  .profil-rechts {
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+  }
+  
+  /* Text unter Profilbild */
+  .profil-inhalt p {
+    margin-top: 10px;
+  }
+  
