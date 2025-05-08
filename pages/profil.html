@@ -1,0 +1,70 @@
+<!-- pages/profil.html -->
+<link rel="stylesheet" href="style-profil.css">
+
+<div class="profil-wrapper">
+  <div class="profil-layout">
+    
+    <!-- Linke Spalte -->
+    <div class="profil-links">
+      <h3>Ziele & XP</h3>
+      <ul id="profil-ziele"></ul>
+    </div>
+
+    <!-- Zentrum -->
+    <div class="profil-inhalt">
+      <img src="Bilder/profilbild.png" alt="Profilbild" class="profilbild">
+      <div class="profilname">
+        <span id="profilname-anzeige">Minty</span>
+        <input type="text" id="profilname-eingabe" />
+        <button id="profilname-bearbeiten">✏️</button>
+      </div>
+      <p>Hier kommt dein persönliches Profil!<br>Noch nicht viel los hier ... 😅</p>
+    </div>
+
+    <!-- Rechte Spalte -->
+    <div class="profil-rechts">
+      <h3>Statistiken</h3>
+      <p>Demnächst ...</p>
+    </div>
+
+  </div>
+</div>
+<script>
+  if (typeof updateHotbarTitle === 'function') updateHotbarTitle();
+  if (typeof updatePageTitle === 'function') updatePageTitle();
+  if (typeof updateGreeting === 'function') updateGreeting();
+  if (typeof renderProfilZieleMitXP === 'function') renderProfilZieleMitXP();
+
+   // Neuer Code für bearbeitbaren Username
+   document.addEventListener("DOMContentLoaded", () => {
+    const anzeige = document.getElementById("profilname-anzeige");
+    const eingabe = document.getElementById("profilname-eingabe");
+    const bearbeiten = document.getElementById("profilname-bearbeiten");
+
+    const gespeicherterName = localStorage.getItem("username") || "Minty";
+    anzeige.textContent = gespeicherterName;
+    eingabe.value = gespeicherterName;
+
+    bearbeiten.addEventListener("click", () => {
+      anzeige.style.display = "none";
+      bearbeiten.style.display = "none";
+      eingabe.style.display = "inline-block";
+      eingabe.focus();
+    });
+
+    eingabe.addEventListener("blur", () => {
+      const neuerName = eingabe.value.trim() || "Minty";
+      anzeige.textContent = neuerName;
+      localStorage.setItem("username", neuerName);
+      anzeige.style.display = "inline-block";
+      bearbeiten.style.display = "inline-block";
+      eingabe.style.display = "none";
+    });
+
+    eingabe.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        eingabe.blur();
+      }
+    });
+  });
+</script>

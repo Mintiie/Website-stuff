@@ -1,0 +1,101 @@
+/* Basis-Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    font-family: Arial;
+    background-color: #787878; /* ⬅ Hintergrundfarbe */
+    height: 100%;
+    color: white;
+  }
+  
+  /* HOTBAR */
+  .hotbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.6); /* halbtransparent */
+    color: white;
+    font-size: 1.2rem;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .hotbar-left,
+  .hotbar-center,
+  .hotbar-right {
+    flex: 1;
+  }
+  
+  .hotbar-left {
+    text-align: left;
+    font-style: italic;
+  }
+  
+  .hotbar-center {
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .hotbar-right {
+    text-align: right;
+    font-family: monospace;
+    font-size: 1.5em;
+  }
+  
+  /* Timer (links in der Hotbar) */
+  #timer {
+    font-style: italic;
+    color: white;
+    font-size: 1.1rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 60px; /* direkt unter der Hotbar */
+    left: 20px; /* von rechts → links */
+    width: 150px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    color: white;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 999;
+  }
+  
+  .sidebar h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+  }
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  .sidebar li {
+    margin: 10px 0;
+  }
+  .sidebar a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: color 0.3s;
+  }
+  .sidebar a:hover {
+    color: #007BFF;
+  }

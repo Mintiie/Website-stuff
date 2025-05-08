@@ -1,19 +1,42 @@
-// ========== INFO-TEXT speichern ==========
-document.addEventListener('DOMContentLoaded', () => {
-  const textarea = document.getElementById('info-text');
-  const savedText = localStorage.getItem('infoText');
-  if (textarea && savedText) {
-    textarea.value = savedText;
-  }
+// Seiteninhalt + seitenbezogene CSS-Datei laden
+function loadPage(path, cssPath) {
+  fetch(path)
+    .then(res => res.text())
+    .then(html => {
+      const main = document.getElementById('main-content');
+      main.innerHTML = html;
 
-  if (textarea) {
-    textarea.addEventListener('input', () => {
-      localStorage.setItem('infoText', textarea.value);
+      // Alte seitenbezogene Stylesheets entfernen
+      document.querySelectorAll('[data-dynamic-style]').forEach(el => el.remove());
+
+      // Neue CSS-Datei einbinden
+      if (cssPath) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `/css/${cssPath}`;
+        link.setAttribute('data-dynamic-style', 'true');
+        document.head.appendChild(link);
+      }
+
+      // Inline-Skripte erneut ausführen
+      main.querySelectorAll('script').forEach(oldScript => {
+        const newScript = document.createElement('script');
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+      if (typeof setupChecklist === 'function') setupChecklist();
+      if (typeof setupInfoText === 'function') setupInfoText();
+      if (typeof renderProfilZieleMitXP === 'function') renderProfilZieleMitXP();
+      if (typeof setupProfilBearbeiten === 'function') setupProfilBearbeiten();
+      if (typeof updateNameAnzeige === 'function') updateNameAnzeige();
     });
-  }
-});
+}
 
-// ========== LIVE-UHR ==========
+// Uhrzeit anzeigen
 function updateClock() {
   const uhr = document.getElementById('uhr');
   if (!uhr) return;
@@ -26,53 +49,8 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// ========== DYNAMISCHER GRUSS ==========
-function updateGreeting() {
-  const gruss = document.getElementById('gruss');
-  const nameElement = document.getElementById('profilname');
-  const name = nameElement ? nameElement.textContent : 'Benutzer';
-
-  const hour = new Date().getHours();
-  let begruessung = '';
-  let emoji = '';
-
-  if (hour >= 5 && hour < 12) {
-    begruessung = 'Guten Morgen';
-    emoji = '🌅';
-  } else if (hour >= 12 && hour < 18) {
-    begruessung = 'Guten Tag';
-    emoji = '☀️';
-  } else if (hour >= 18 && hour < 23) {
-    begruessung = 'Guten Abend';
-    emoji = '🌇';
-  } else {
-    begruessung = 'Gute Nacht';
-    emoji = '🌙';
-  }
-
-  if (gruss) {
-    gruss.textContent = `${begruessung}, ${name} ${emoji}`;
-  }
-}
-
-// ========== HOTBAR-TITEL & SEITENTITEL FÜR PROFILSEITE ==========
-function updateHotbarTitle() {
-  const nameElement = document.getElementById('profilname');
-  const titleElement = document.getElementById('hotbar-titel');
-  const name = nameElement ? nameElement.textContent : 'Benutzer';
-  if (titleElement) {
-    titleElement.textContent = `🔥 ${name}s Profil 🔥`;
-  }
-}
-
-function updatePageTitle() {
-  const nameElement = document.getElementById('profilname');
-  const name = nameElement ? nameElement.textContent : 'Benutzer';
-  document.title = `${name}s Profil 🔥`;
-}
-
-// ========== TIMER ==========
-let timerElement = document.getElementById('timer');
+// Timer (Arbeitszeit)
+const timerElement = document.getElementById('timer');
 let startTime = Date.now();
 let savedTime = parseInt(localStorage.getItem('arbeitszeit')) || 0;
 
@@ -103,113 +81,179 @@ window.addEventListener('beforeunload', () => {
   localStorage.setItem('arbeitszeit', totalTime);
 });
 
-// ========== CHECKLISTE & XP ==========
-document.addEventListener("DOMContentLoaded", () => {
-  updateGreeting();
+// Begrüßungstext aktualisieren
+function updateGreeting() {
+  const gruss = document.getElementById('gruss');
+  const name = localStorage.getItem("username") || "Benutzer";
 
-  if (window.location.pathname.includes("profil.html")) {
-    updateHotbarTitle();
-    updatePageTitle();
+  const hour = new Date().getHours();
+  let begruessung = '';
+  let emoji = '';
+
+  if (hour >= 5 && hour < 12) {
+    begruessung = 'Guten Morgen'; emoji = '🌅';
+  } else if (hour >= 12 && hour < 18) {
+    begruessung = 'Guten Tag'; emoji = '☀️';
+  } else if (hour >= 18 && hour < 23) {
+    begruessung = 'Guten Abend'; emoji = '🌇';
+  } else {
+    begruessung = 'Gute Nacht'; emoji = '🌙';
   }
 
+  if (gruss) {
+    gruss.textContent = `${begruessung}, ${name} ${emoji}`;
+  }
+}
+
+// Hotbar-Titel anpassen
+function updateHotbarTitle() {
+  const titleElement = document.getElementById('hotbar-titel');
+  const name = localStorage.getItem("username") || "Benutzer";
+  if (titleElement) {
+    titleElement.textContent = `🔥 ${name}'s Profil 🔥`;
+  }
+}
+
+// Seitentitel im Browser
+function updatePageTitle() {
+  const name = localStorage.getItem("username") || "Benutzer";
+  document.title = `${name}s Profil`;
+}
+
+// XP-Ziele in Profil anzeigen
+function renderProfilZieleMitXP() {
+  const zielListe = document.getElementById("profil-ziele");
+  if (!zielListe) return;
+  const items = JSON.parse(localStorage.getItem("checklist")) || [];
+  zielListe.innerHTML = "";
+  items.forEach(item => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span>${item.text}</span><span>${item.xp || 10} XP</span>`;
+    zielListe.appendChild(li);
+  });
+}
+function setupInfoText() {
+  const textarea = document.getElementById("info-text");
+  if (!textarea) return;
+
+  // Beim Laden: Inhalt aus localStorage setzen
+  textarea.value = localStorage.getItem("infoText") || "";
+
+  // Beim Schreiben: Inhalt speichern
+  textarea.addEventListener("input", () => {
+    localStorage.setItem("infoText", textarea.value);
+  });
+}
+
+// === CHECKLISTE ===
+
+function setupChecklist() {
   const form = document.getElementById("checklist-form");
   const input = document.getElementById("checklist-input");
-  const list = document.getElementById("checklist-items");
+  const ul = document.getElementById("checklist-items");
 
-  let items = JSON.parse(localStorage.getItem("checklist")) || [];
+  if (!form || !input || !ul) return;
 
-  // === NEU: TÄGLICHES RESET PRÜFEN UND SPEICHERN ===
-  const gespeichertesDatum = localStorage.getItem("checklistDatum");
-  const heutigesDatum = new Date().toISOString().split("T")[0];
+  let checklist = JSON.parse(localStorage.getItem("checklist")) || [];
 
-  if (gespeichertesDatum !== heutigesDatum) {
-    const gesternErledigt = items.filter(item => item.done);
-    localStorage.setItem("gesternErledigt", JSON.stringify(gesternErledigt));
-
-    // Reset aller Ziele
-    items = items.map(item => ({ ...item, done: false }));
-
-    localStorage.setItem("checklistDatum", heutigesDatum);
-    localStorage.setItem("checklist", JSON.stringify(items));
+  function saveChecklist() {
+    localStorage.setItem("checklist", JSON.stringify(checklist));
   }
 
-  function saveItems() {
-    localStorage.setItem("checklist", JSON.stringify(items));
-  }
-
-  function renderItems() {
-    if (!list) return;
-    list.innerHTML = "";
-    items.forEach((item, index) => {
+  function renderChecklist() {
+    ul.innerHTML = "";
+    checklist.forEach((item, index) => {
       const li = document.createElement("li");
       li.className = "checklist-item";
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.checked = item.done;
+      checkbox.checked = item.done || false;
       checkbox.addEventListener("change", () => {
-        items[index].done = checkbox.checked;
-        span.style.textDecoration = checkbox.checked ? "line-through" : "none";
-        saveItems();
+        checklist[index].done = checkbox.checked;
+        saveChecklist();
       });
 
-      const span = document.createElement("span");
-      span.textContent = item.text;
-      if (item.done) span.style.textDecoration = "line-through";
+      const text = document.createElement("span");
+      text.textContent = item.text;
 
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "🗑️";
-      delBtn.addEventListener("click", () => {
-        items.splice(index, 1);
-        saveItems();
-        renderItems();
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑️";
+      deleteBtn.addEventListener("click", () => {
+        checklist.splice(index, 1);
+        saveChecklist();
+        renderChecklist();
       });
 
       li.appendChild(checkbox);
-      li.appendChild(span);
-      li.appendChild(delBtn);
-      list.appendChild(li);
+      li.appendChild(text);
+      li.appendChild(deleteBtn);
+      ul.appendChild(li);
     });
   }
 
-  form?.addEventListener("submit", e => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const value = input.value.trim();
-    if (value === "") return;
-    items.push({ text: value, done: false, xp: 10 });
+    const text = input.value.trim();
+    if (text === "") return;
+    checklist.push({ text, xp: 10, done: false });
     input.value = "";
-    saveItems();
-    renderItems();
+    saveChecklist();
+    renderChecklist();
   });
 
-  function renderGesternErledigt() {
-    const historyList = document.querySelector(".checklist-history ul");
-    if (!historyList) return;
-    const gestern = JSON.parse(localStorage.getItem("gesternErledigt")) || [];
-    historyList.innerHTML = "";
-    gestern.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item.text;
-      historyList.appendChild(li);
-    });
+  renderChecklist();
+}
+
+function setupProfilBearbeiten() {
+  const anzeige = document.getElementById("profilname-anzeige");
+  const eingabe = document.getElementById("profilname-eingabe");
+  const bearbeiten = document.getElementById("profilname-bearbeiten");
+
+  if (!anzeige || !eingabe || !bearbeiten) {
+    console.warn("Profil-Bearbeiten: Elemente nicht gefunden");
+    return;
   }
 
-  function renderProfilZieleMitXP() {
-    const zielListe = document.getElementById("profil-ziele");
-    if (!zielListe) return;
-    const items = JSON.parse(localStorage.getItem("checklist")) || [];
+  const gespeicherterName = localStorage.getItem("username") || "Minty";
+  anzeige.textContent = gespeicherterName;
+  eingabe.value = gespeicherterName;
 
-    zielListe.innerHTML = "";
-    items.forEach(item => {
-      const li = document.createElement("li");
-      li.innerHTML = `<span>${item.text}</span><span>${item.xp || 10} XP</span>`;
-      zielListe.appendChild(li);
-    });
-  }
+  bearbeiten.addEventListener("click", () => {
+    anzeige.style.display = "none";
+    bearbeiten.style.display = "none";
+    eingabe.style.display = "inline-block";
+    eingabe.focus();
+  });
 
-  renderItems();
-  renderGesternErledigt();
-  if (window.location.pathname.includes("profil.html")) {
-    renderProfilZieleMitXP();
+  eingabe.addEventListener("blur", () => {
+    const neuerName = eingabe.value.trim() || "Minty";
+    anzeige.textContent = neuerName;
+    localStorage.setItem("username", neuerName);
+    eingabe.style.display = "none";
+    anzeige.style.display = "inline-block";
+    bearbeiten.style.display = "inline-block";
+
+    updateNameAnzeige(); // 🔁 wichtig
+  });
+
+  eingabe.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      eingabe.blur();
+    }
+  });
+}
+
+// 🔥 Diese Funktion steht jetzt **außerhalb**
+function updateNameAnzeige() {
+  const name = localStorage.getItem("username") || "Benutzer";
+
+  if (typeof updateGreeting === 'function') updateGreeting();
+  if (typeof updateHotbarTitle === 'function') updateHotbarTitle();
+  if (typeof updatePageTitle === 'function') updatePageTitle();
+
+  const profilnameAnzeige = document.getElementById("profilname-anzeige");
+  if (profilnameAnzeige) {
+    profilnameAnzeige.textContent = name;
   }
-});
+}
