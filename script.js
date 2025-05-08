@@ -31,6 +31,8 @@ function loadPage(path, cssPath) {
       if (typeof setupChecklist === 'function') setupChecklist();
       if (typeof setupInfoText === 'function') setupInfoText();
       if (typeof renderProfilZieleMitXP === 'function') renderProfilZieleMitXP();
+      if (typeof setupProfilBearbeiten === 'function') setupProfilBearbeiten();
+      if (typeof updateNameAnzeige === 'function') updateNameAnzeige();
     });
 }
 
@@ -82,8 +84,7 @@ window.addEventListener('beforeunload', () => {
 // Begrüßungstext aktualisieren
 function updateGreeting() {
   const gruss = document.getElementById('gruss');
-  const nameElement = document.getElementById('profilname');
-  const name = nameElement ? nameElement.textContent : 'Benutzer';
+  const name = localStorage.getItem("username") || "Benutzer";
 
   const hour = new Date().getHours();
   let begruessung = '';
@@ -106,18 +107,16 @@ function updateGreeting() {
 
 // Hotbar-Titel anpassen
 function updateHotbarTitle() {
-  const nameElement = document.getElementById('profilname');
   const titleElement = document.getElementById('hotbar-titel');
-  const name = nameElement ? nameElement.textContent : 'Benutzer';
+  const name = localStorage.getItem("username") || "Benutzer";
   if (titleElement) {
-    titleElement.textContent = `🔥 ${name}s Profil 🔥`;
+    titleElement.textContent = `🔥 ${name}'s Profil 🔥`;
   }
 }
 
 // Seitentitel im Browser
 function updatePageTitle() {
-  const nameElement = document.getElementById('profilname');
-  const name = nameElement ? nameElement.textContent : 'Benutzer';
+  const name = localStorage.getItem("username") || "Benutzer";
   document.title = `${name}s Profil`;
 }
 
@@ -204,4 +203,57 @@ function setupChecklist() {
   });
 
   renderChecklist();
+}
+
+function setupProfilBearbeiten() {
+  const anzeige = document.getElementById("profilname-anzeige");
+  const eingabe = document.getElementById("profilname-eingabe");
+  const bearbeiten = document.getElementById("profilname-bearbeiten");
+
+  if (!anzeige || !eingabe || !bearbeiten) {
+    console.warn("Profil-Bearbeiten: Elemente nicht gefunden");
+    return;
+  }
+
+  const gespeicherterName = localStorage.getItem("username") || "Minty";
+  anzeige.textContent = gespeicherterName;
+  eingabe.value = gespeicherterName;
+
+  bearbeiten.addEventListener("click", () => {
+    anzeige.style.display = "none";
+    bearbeiten.style.display = "none";
+    eingabe.style.display = "inline-block";
+    eingabe.focus();
+  });
+
+  eingabe.addEventListener("blur", () => {
+    const neuerName = eingabe.value.trim() || "Minty";
+    anzeige.textContent = neuerName;
+    localStorage.setItem("username", neuerName);
+    eingabe.style.display = "none";
+    anzeige.style.display = "inline-block";
+    bearbeiten.style.display = "inline-block";
+
+    updateNameAnzeige(); // 🔁 wichtig
+  });
+
+  eingabe.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      eingabe.blur();
+    }
+  });
+}
+
+// 🔥 Diese Funktion steht jetzt **außerhalb**
+function updateNameAnzeige() {
+  const name = localStorage.getItem("username") || "Benutzer";
+
+  if (typeof updateGreeting === 'function') updateGreeting();
+  if (typeof updateHotbarTitle === 'function') updateHotbarTitle();
+  if (typeof updatePageTitle === 'function') updatePageTitle();
+
+  const profilnameAnzeige = document.getElementById("profilname-anzeige");
+  if (profilnameAnzeige) {
+    profilnameAnzeige.textContent = name;
+  }
 }

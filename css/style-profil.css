@@ -56,6 +56,11 @@
   }
   
   .profilname {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
     color: white;
     font-size: 1.5rem;
     text-align: center;
@@ -68,6 +73,10 @@
     margin-top: 15px;
   }
   
+  #profilname-anzeige {
+    flex-grow: 1;
+  }
+
   /* Rechte Spalte */
   .profil-rechts {
     width: 300px;
@@ -83,3 +92,21 @@
     margin-top: 10px;
   }
   
+ #profilname-eingabe {
+  display: none;
+  flex-grow: 1;
+  padding: 6px;
+  font-size: 1.2rem;
+  color: black;
+  background-color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+#profilname-bearbeiten {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
