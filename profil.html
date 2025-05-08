@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 1) Reset von Padding auf html UND body */
+    html, body {
+      margin: 0;
+      padding: 0 !important;
+      height: 100%;
+      width: 100%;
+    }
+
+    .profil-wrapper {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    }
+
+    .profil-inhalt {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* <<< wichtig */
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    }
+
+    /* 2) Body als Column-Flexcontainer */
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .zurueck-link {
+      color: deepskyblue;
+      margin-top: 20px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hotbar -->
+  <div class="hotbar">
+    <div class="hotbar-left">
+      <span id="gruss">Guten Tag</span>
+      <span style="color:white; margin: 0 10px;">|</span>
+      <span id="timer">00:00:00</span>
+    </div>
+    <div class="hotbar-center">🔥 workin progress 🔥</div>
+    <div class="hotbar-right" id="uhr">--:--:--</div>
+  </div>
+
+  <!-- Exakt mittig platzierter Profil-Inhalt -->
+  <div class="profil-inhalt">
+    <div class="profil-wrapper">
+      <img src="Bilder/profilbild.png" alt="Profilbild" class="profilbild">
+      <div class="profilname" id="profilname">Minty</div>
+    </div>
+    <p>Hier kommt dein persönliches Profil!<br>Noch nicht viel los hier ... 😅</p>
+    <a href="index.html" class="zurueck-link">← Zurück zur Hauptseite</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

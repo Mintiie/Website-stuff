@@ -54,7 +54,22 @@ function updateGreeting() {
     gruss.textContent = `${begruessung}, ${name} ${emoji}`;
   }
 }
-document.addEventListener("DOMContentLoaded", updateGreeting);
+
+// ========== HOTBAR-TITEL & SEITENTITEL FÜR PROFILSEITE ==========
+function updateHotbarTitle() {
+  const nameElement = document.getElementById('profilname');
+  const titleElement = document.getElementById('hotbar-titel');
+  const name = nameElement ? nameElement.textContent : 'Benutzer';
+  if (titleElement) {
+    titleElement.textContent = `🔥 ${name}s Profil 🔥`;
+  }
+}
+
+function updatePageTitle() {
+  const nameElement = document.getElementById('profilname');
+  const name = nameElement ? nameElement.textContent : 'Benutzer';
+  document.title = `${name}s Profil`;
+}
 
 // ========== TIMER ==========
 let timerElement = document.getElementById('timer');
@@ -90,25 +105,30 @@ window.addEventListener('beforeunload', () => {
 
 // ========== CHECKLISTE ==========
 document.addEventListener("DOMContentLoaded", () => {
+  updateGreeting();
+
+  // Nur für profil.html
+  if (window.location.pathname.includes("profil.html")) {
+    updateHotbarTitle();
+    updatePageTitle();
+  }
+
   const form = document.getElementById("checklist-form");
   const input = document.getElementById("checklist-input");
   const list = document.getElementById("checklist-items");
 
   let items = JSON.parse(localStorage.getItem("checklist")) || [];
 
-  // === NEU: TÄGLICHES RESET PRÜFEN UND SPEICHERN ===
+  // === TÄGLICHES RESET PRÜFEN UND SPEICHERN ===
   const gespeichertesDatum = localStorage.getItem("checklistDatum");
   const heutigesDatum = new Date().toISOString().split("T")[0];
 
   if (gespeichertesDatum !== heutigesDatum) {
-    // Gestern erledigt speichern
     const gesternErledigt = items.filter(item => item.done);
     localStorage.setItem("gesternErledigt", JSON.stringify(gesternErledigt));
 
-    // Alle als nicht erledigt markieren
     items = items.map(item => ({ ...item, done: false }));
 
-    // Datum aktualisieren
     localStorage.setItem("checklistDatum", heutigesDatum);
     localStorage.setItem("checklist", JSON.stringify(items));
   }
@@ -147,24 +167,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === NEU: "Gestern erledigt" ausgeben ===
-function renderGesternErledigt() {
-  const historyList = document.querySelector(".checklist-history ul");
-  const gestern = JSON.parse(localStorage.getItem("gesternErledigt")) || [];
-
-  historyList.innerHTML = ""; // Leeren, bevor neu befüllt wird
-  gestern.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.text;
-    historyList.appendChild(li);
-  });
-}
+  function renderGesternErledigt() {
+    const historyList = document.querySelector(".checklist-history ul");
+    const gestern = JSON.parse(localStorage.getItem("gesternErledigt")) || [];
+    historyList.innerHTML = "";
+    gestern.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item.text;
+      historyList.appendChild(li);
+    });
+  }
 
   function saveItems() {
     localStorage.setItem("checklist", JSON.stringify(items));
   }
 
-  form.addEventListener("submit", e => {
+  form?.addEventListener("submit", e => {
     e.preventDefault();
     if (input.value.trim() === "") return;
     items.push({ text: input.value.trim(), done: false });
@@ -176,5 +194,3 @@ function renderGesternErledigt() {
   renderItems();
   renderGesternErledigt();
 });
-
-
