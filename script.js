@@ -96,6 +96,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let items = JSON.parse(localStorage.getItem("checklist")) || [];
 
+  // === NEU: TÄGLICHES RESET PRÜFEN UND SPEICHERN ===
+  const gespeichertesDatum = localStorage.getItem("checklistDatum");
+  const heutigesDatum = new Date().toISOString().split("T")[0];
+
+  if (gespeichertesDatum !== heutigesDatum) {
+    // Gestern erledigt speichern
+    const gesternErledigt = items.filter(item => item.done);
+    localStorage.setItem("gesternErledigt", JSON.stringify(gesternErledigt));
+
+    // Alle als nicht erledigt markieren
+    items = items.map(item => ({ ...item, done: false }));
+
+    // Datum aktualisieren
+    localStorage.setItem("checklistDatum", heutigesDatum);
+    localStorage.setItem("checklist", JSON.stringify(items));
+  }
+
   function renderItems() {
     list.innerHTML = "";
     items.forEach((item, index) => {
@@ -130,6 +147,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // === NEU: "Gestern erledigt" ausgeben ===
+function renderGesternErledigt() {
+  const historyList = document.querySelector(".checklist-history ul");
+  const gestern = JSON.parse(localStorage.getItem("gesternErledigt")) || [];
+
+  historyList.innerHTML = ""; // Leeren, bevor neu befüllt wird
+  gestern.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item.text;
+    historyList.appendChild(li);
+  });
+}
+
   function saveItems() {
     localStorage.setItem("checklist", JSON.stringify(items));
   }
@@ -144,4 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   renderItems();
+  renderGesternErledigt();
 });
+
+
