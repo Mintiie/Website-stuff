@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -9,77 +10,25 @@
   <div class="hotbar">
     <div class="hotbar-left">
       <span id="gruss">Guten Tag</span>
-      <span style="color:white; margin: 0 10px;">|</span>
+      <span>|</span>
       <span id="timer">00:00:00</span>
     </div>
-    <div class="hotbar-center">🔥 workin progress 🔥</div>
+    <div class="hotbar-center" id="hotbar-titel">🔥 workin progress 🔥</div>
     <div class="hotbar-right" id="uhr">--:--:--</div>
-  </div>
-
-  <div class="main-wrapper">
-    <div class="linke-spalte">
-      <img src="Bilder/profilbild.png" alt="Profilbild" class="profilbild">
-      <div class="profilname" id="profilname">Minty</div>
-      <textarea id="info-text" class="textarea" placeholder="..."></textarea>
-    </div>
-
-    <div class="rechte-spalte">
-      <div class="blog-entry">
-        <h2 class="blog-title">Mein erster Beitrag</h2>
-        <p class="blog-description">Lorem ipsum ...</p>
-        <a href="#" class="blog-link">Mehr lesen</a>
-      </div>
-      <div class="blog-entry">
-        <h2 class="blog-title">Zweiter Eintrag</h2>
-        <p class="blog-description">Lorem ipsum ...</p>
-        <a href="#" class="blog-link">Mehr lesen</a>
-      </div>
-      <div class="blog-entry">
-        <h2 class="blog-title">Gedanken am Montag</h2>
-        <p class="blog-description">Lorem ipsum ...</p>
-        <a href="#" class="blog-link">Mehr lesen</a>
-      </div>
-      <div class="blog-entry">
-        <h2 class="blog-title">Anime der Woche</h2>
-        <p class="blog-description">Lorem ipsum ...</p>
-        <a href="#" class="blog-link">Mehr lesen</a>
-      </div>
-    </div>
-
-    <!-- Checkliste und Verlauf -->
-    <div class="zielbereich">
-      <div class="checklist-container">
-        <h3>Ziele</h3>
-        <form id="checklist-form">
-          <input type="text" id="checklist-input" placeholder="Neues Ziel..." required />
-          <button type="submit">Hinzufügen</button>
-        </form>
-        <ul id="checklist-items">
-          <li class="checklist-item"><input type="checkbox"> Fahrrad fahren <button>🗑️</button></li>
-          <li class="checklist-item"><input type="checkbox"> Krafttraining <button>🗑️</button></li>
-          <li class="checklist-item"><input type="checkbox"> Buch lesen <button>🗑️</button></li>
-          <li class="checklist-item"><input type="checkbox"> coden <button>🗑️</button></li>
-        </ul>
-      </div>
-
-      <div class="checklist-history">
-        <h3>Gestern erledigt</h3>
-        <ul></ul>
-      </div>
-    </div>
   </div>
 
   <div class="sidebar">
     <h2>Menü</h2>
     <ul>
-      <li><a href="profil.html">Profil</a></li>
-      <li><a href="#">Freunde</a></li>
-      <li><a href="#">Contacts</a></li>
-      <li><a href="#">Informationen</a></li>
-      <li><a href="#">Eintrag erstellen</a></li>
-      <li><a href="#">uiuiui</a></li>
+      <li><a href="#" onclick="loadPage('pages/profil.html')">Profil</a></li>
+      <li><a href="#" onclick="loadPage('pages/home.html')">Home</a></li>
+      <!-- weitere Menüpunkte -->
     </ul>
   </div>
+
+  <main id="main-content">
+    <!-- Hier wird dynamisch der Seiteninhalt geladen -->
+  </main>
 
   <script src="script.js"></script>
 </body>

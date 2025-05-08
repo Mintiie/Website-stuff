@@ -1,0 +1,52 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menü</h2>
+    <ul>
+      <li><a href="#" onclick="loadPage('pages/profil.html')">Profil</a></li>
+      <li><a href="#" onclick="loadPage('pages/home.html')">Home</a></li>
+      <!-- weitere Menüpunkte -->
+    </ul>
+  </div>
+
+  <main id="main-content">
+    <!-- Hier wird dynamisch der Seiteninhalt geladen -->
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+<!-- pages/profil.html -->
+<div class="profil-layout">
+  <div class="profil-links">
+    <h3>Ziele & XP</h3>
+    <ul id="profil-ziele"></ul>
+  </div>
+
+  <div class="profil-inhalt">
+    <div class="profil-wrapper">
+      <img src="Bilder/profilbild.png" alt="Profilbild" class="profilbild">
+      <div class="profilname" id="profilname">Minty</div>
+    </div>
+    <p>Hier kommt dein persönliches Profil!<br>Noch nicht viel los hier ... 😅</p>
+  </div>
+
+  <div class="profil-rechts">
+    <!-- Später: Statistiken -->
+  </div>
+</div>
+
+<script>
+  if (typeof updateHotbarTitle === 'function') updateHotbarTitle();
+  if (typeof updatePageTitle === 'function') updatePageTitle();
+  if (typeof updateGreeting === 'function') updateGreeting();
+  if (typeof renderProfilZieleMitXP === 'function') renderProfilZieleMitXP();
+</script>
