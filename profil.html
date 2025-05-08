@@ -42,6 +42,27 @@
       margin-top: 20px;
       text-decoration: none;
     }
+
+    .profil-layout {
+  display: flex;
+  gap: 50px;
+  margin-top: 50px;
+}
+
+.profil-links {
+  width: 300px;
+  background-color: rgba(0,0,0,0.6);
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+}
+
+#profil-ziele li {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
   </style>
 </head>
 <body>
@@ -54,6 +75,17 @@
     </div>
     <div class="hotbar-center">🔥 workin progress 🔥</div>
     <div class="hotbar-right" id="uhr">--:--:--</div>
+  </div>
+
+  <div class="profil-layout">
+    <div class="profil-links">
+      <h3>Ziele & XP</h3>
+      <ul id="profil-ziele"></ul>
+    </div>
+  
+    <div class="profil-rechts">
+      <!-- später: Stats-Feld -->
+    </div>
   </div>
 
   <!-- Exakt mittig platzierter Profil-Inhalt -->

@@ -68,7 +68,7 @@ function updateHotbarTitle() {
 function updatePageTitle() {
   const nameElement = document.getElementById('profilname');
   const name = nameElement ? nameElement.textContent : 'Benutzer';
-  document.title = `${name}s Profil`;
+  document.title = `${name}s Profil 🔥`;
 }
 
 // ========== TIMER ==========
@@ -103,11 +103,10 @@ window.addEventListener('beforeunload', () => {
   localStorage.setItem('arbeitszeit', totalTime);
 });
 
-// ========== CHECKLISTE ==========
+// ========== CHECKLISTE & XP ==========
 document.addEventListener("DOMContentLoaded", () => {
   updateGreeting();
 
-  // Nur für profil.html
   if (window.location.pathname.includes("profil.html")) {
     updateHotbarTitle();
     updatePageTitle();
@@ -119,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let items = JSON.parse(localStorage.getItem("checklist")) || [];
 
-  // === TÄGLICHES RESET PRÜFEN UND SPEICHERN ===
+  // === NEU: TÄGLICHES RESET PRÜFEN UND SPEICHERN ===
   const gespeichertesDatum = localStorage.getItem("checklistDatum");
   const heutigesDatum = new Date().toISOString().split("T")[0];
 
@@ -127,13 +126,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const gesternErledigt = items.filter(item => item.done);
     localStorage.setItem("gesternErledigt", JSON.stringify(gesternErledigt));
 
+    // Reset aller Ziele
     items = items.map(item => ({ ...item, done: false }));
 
     localStorage.setItem("checklistDatum", heutigesDatum);
     localStorage.setItem("checklist", JSON.stringify(items));
   }
 
+  function saveItems() {
+    localStorage.setItem("checklist", JSON.stringify(items));
+  }
+
   function renderItems() {
+    if (!list) return;
     list.innerHTML = "";
     items.forEach((item, index) => {
       const li = document.createElement("li");
@@ -167,8 +172,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  form?.addEventListener("submit", e => {
+    e.preventDefault();
+    const value = input.value.trim();
+    if (value === "") return;
+    items.push({ text: value, done: false, xp: 10 });
+    input.value = "";
+    saveItems();
+    renderItems();
+  });
+
   function renderGesternErledigt() {
     const historyList = document.querySelector(".checklist-history ul");
+    if (!historyList) return;
     const gestern = JSON.parse(localStorage.getItem("gesternErledigt")) || [];
     historyList.innerHTML = "";
     gestern.forEach(item => {
@@ -178,19 +194,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function saveItems() {
-    localStorage.setItem("checklist", JSON.stringify(items));
-  }
+  function renderProfilZieleMitXP() {
+    const zielListe = document.getElementById("profil-ziele");
+    if (!zielListe) return;
+    const items = JSON.parse(localStorage.getItem("checklist")) || [];
 
-  form?.addEventListener("submit", e => {
-    e.preventDefault();
-    if (input.value.trim() === "") return;
-    items.push({ text: input.value.trim(), done: false });
-    input.value = "";
-    saveItems();
-    renderItems();
-  });
+    zielListe.innerHTML = "";
+    items.forEach(item => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${item.text}</span><span>${item.xp || 10} XP</span>`;
+      zielListe.appendChild(li);
+    });
+  }
 
   renderItems();
   renderGesternErledigt();
+  if (window.location.pathname.includes("profil.html")) {
+    renderProfilZieleMitXP();
+  }
 });
